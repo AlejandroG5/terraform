@@ -1,7 +1,15 @@
+variable "AWS_ACCESS_KEY_ID" {
+  type = string
+}
+
+variable "AWS_SECRET_KEY_ID" {
+  type = string
+}
+
 provider "aws"{
     region     = "us-west-1"
-    access_key = AWS_ACCESS_KEY_ID
-    secret_key = AWS_SECRET_KEY_ID
+    access_key = var.AWS_ACCESS_KEY_ID
+    secret_key = var.AWS_SECRET_KEY_ID
 }
 
 resource "aws_vpc" "primary_vpc" {
