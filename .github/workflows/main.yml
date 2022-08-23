@@ -19,6 +19,9 @@ jobs:
         shell: bash
         working-directory: .
     steps:
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.ACCESS_KEY }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.SECRET_KEY }}
       - name: Git checkout
         uses: actions/checkout@v3
 
