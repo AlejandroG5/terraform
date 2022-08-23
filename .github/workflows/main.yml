@@ -1,0 +1,48 @@
+name: "Terraform action"
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+permissions:
+      id-token: write
+      contents: read
+      pull-requests: write
+env:
+  TF_LOG: INFO
+  AWS_REGION: ${{ secrets.AWS_REGION }}
+  AWS_ACCESS_KEY_ID: ${{ secrets.ACCESS_KEY }}
+  AWS_SECRET_KEY_ID: ${{ secrets.SECRET_KEY }}
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+        working-directory: .
+    steps:
+      - name: Git checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: 1.2.7
+
+      - name: Terraform Init
+        id: init
+        run: terraform init
+
+      - name: Terraform Validate
+        id: validate
+        run: TF_VAR_AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID TF_VAR_AWS_SECRET_KEY_ID=$AWS_SECRET_KEY_ID terraform validate
+
+      - name: Terraform Plan
+        id: plan
+        run: TF_VAR_AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID TF_VAR_AWS_SECRET_KEY_ID=$AWS_SECRET_KEY_ID terraform plan
+        continue-on-error: false
+
+      - name: Terraform Apply
+        if: github.ref == 'refs/heads/master' && github.event_name == 'push'
+        run: TF_VAR_AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID TF_VAR_AWS_SECRET_KEY_ID=$AWS_SECRET_KEY_ID terraform apply -auto-approve -input=false
+
