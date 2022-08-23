@@ -7,7 +7,7 @@ provider "aws"{
 resource "aws_vpc" "primary_vpc" {
   cidr_block = "10.0.0.0/16"
   tags = {
-    Name = "Primary-VPC"
+    Name = "Primary-VPC1"
   }
 }
 
