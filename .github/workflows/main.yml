@@ -11,6 +11,8 @@ permissions:
 env:
   TF_LOG: INFO
   AWS_REGION: ${{ secrets.AWS_REGION }}
+  AWS_ACCESS_KEY_ID: ${{ secrets.ACCESS_KEY }}
+  AWS_SECRET_KEY_ID: ${{ secrets.SECRET_KEY }}
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -37,10 +39,10 @@ jobs:
 
       - name: Terraform Plan
         id: plan
-        run: terraform plan -no-color
+        run: terraform plan -var 'AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}' -var 'AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}'
         continue-on-error: false
 
       - name: Terraform Apply
         if: github.ref == 'refs/heads/master' && github.event_name == 'push'
-        run: terraform apply -auto-approve -input=false
+        run: terraform apply -auto-approve -input=false -var 'AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}' -var 'AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}'
 
