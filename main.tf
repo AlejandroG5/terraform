@@ -1,13 +1,13 @@
 provider "aws"{
     region     = "us-west-1"
-    access_key = secrets.ACCESS_KEY
-    secret_key = secrets.SECRET_KEY
+    access_key = "AKIAVRC5AKGVFO3OS6SR"
+    secret_key = "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"
 }
 
 resource "aws_vpc" "primary_vpc" {
   cidr_block = "10.0.0.0/16"
   tags = {
-    Name = "Primary-VPC"
+    Name = "Primary-VPC-1"
   }
 }
 
