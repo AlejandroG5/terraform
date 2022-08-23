@@ -35,9 +35,7 @@ jobs:
 
       - name: Terraform Validate
         id: validate
-        run: export AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
-        run: export AWS_SECRET_KEY_ID=${AWS_SECRET_KEY_ID}
-        run: terraform validate
+        run: export AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}; export AWS_SECRET_KEY_ID=${AWS_SECRET_KEY_ID}; terraform validate
 
       - name: Terraform Plan
         id: plan
