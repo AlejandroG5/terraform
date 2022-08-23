@@ -2,12 +2,12 @@ name: "Terraform action"
 on:
   push:
     branches:
-      - main
+      - master
   pull_request:
 permissions:
-      id-token: write # This is required for aws oidc connection
-      contents: read # This is required for actions/checkout
-      pull-requests: write # This is required for gh bot to comment PR
+      id-token: write
+      contents: read
+      pull-requests: write
 env:
   TF_LOG: INFO
   AWS_REGION: ${{ secrets.AWS_REGION }}
@@ -41,5 +41,6 @@ jobs:
         continue-on-error: false
 
       - name: Terraform Apply
+        if: github.ref == 'refs/heads/master' && github.event_name == 'push'
         run: terraform apply -auto-approve -input=false
 
